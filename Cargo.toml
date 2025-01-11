@@ -1,0 +1,13 @@
+[package]
+name = "kernel-experiment"
+version = "0.1.0"
+authors = ["Dario Marzzucco <drrkermazyxokv@gmail.com>"]
+
+[lib]
+name = "experiment"
+crate-type = ["staticlib"]
+
+[dependencies]
+lazy_static = { version = "1.0.0", features = ["spin_no_std"] }
+spin = "0.4.9"
+rand = { version = "0.4.2", default-features = false }
