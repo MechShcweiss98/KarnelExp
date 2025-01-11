@@ -13,20 +13,22 @@ extern "C" {
 #[panic_handler]
 #[no_mangle]
 pub fn rust_begin_panic(info: &PanicInfo) -> ! {
-    // Print the file and line number
+    
     if let Some(location) = info.location() {
-        println!("Rust panic @ {}:{}",
-            location.file(), location.line());
+        println!("Panic ocurred in file '{}' at line '{}'",
+                 location.file(),
+                 location.line());
+    } else {
+        println!("Panic occurred but location information is unavailable.");
     }
 
-    // Print the message and a newline
     if let Some(message) = info.message() {
         println!("{}", message);
     }
 
     unsafe {
-        // In a real kernel module, we should use abort() instead of panic()
-        abort() // replace with panic_c() if you want
+        clean_up_resource();
+        abort(); 
     }
 }
 
