@@ -8,10 +8,17 @@
 #![feature(alloc_error_handler)]
 #![feature(const_fn)]
 #![feature(panic_info_message)]
+
+// use core::alloc;
 extern crate alloc;
+use core::alloc::Layout;
 // Memory-related functions are in the `mem` module
 mod mem;
 
+#[alloc_error_handler]
+fn alloc_error_handler(layout: Layout) -> ! {
+    panic!("Error de asignación para layout: {:?}", layout);
+}
 // Set up the global allocator
 #[global_allocator]
 static ALLOCATOR: mem::KernelAllocator = mem::KernelAllocator::new();
@@ -34,13 +41,13 @@ mod io;
 mod lang;
 pub use lang::*;
 
-mod experiment;
-pub use experiment::*;
+mod experimental;
+pub use experimental::*;
 
 // Entry points
 #[no_mangle]
 pub extern "C" fn rust_mod_init() -> i32 {
-    print!("Panic probability: {}/{}\n", CONFIG.lock().chance, MAX_RAND);
+    println!("Panic probability: {}/{}\n", CONFIG.lock().chance, MAX_RAND);
     0
 }
 

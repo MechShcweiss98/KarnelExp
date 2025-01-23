@@ -30,9 +30,8 @@ pub fn rust_begin_panic(info: &PanicInfo) -> ! {
     }
 }
 
-use core::alloc::Layout;
 #[cfg(not(test))]
 #[alloc_error_handler]
-pub fn alloc_error(_: Layout) -> ! {
+pub fn alloc_error(_: core::alloc::Layout) -> ! {
     unsafe { abort() }
 }
